@@ -1,0 +1,19 @@
+{
+    "name": "adeons/php-ember",
+    "type": "library",
+    "description": "Server side PHP components for Ember.js Data",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Adeons"
+        }
+    ],
+    "require": {
+        "php": ">= 5.3.0",
+        "symfony/http-foundation": "~2",
+        "icanboogie/inflector": "~1"
+    },
+    "autoload": {
+        "classmap": [ "src" ]
+    }
+}
