@@ -211,23 +211,24 @@ class RestHandler {
 	protected function makeModelsResponse(ModelIterator $models, $total = null) {
 		
 		$pool = $this->createPool();
-		
-		if($total !== null) {
-			$pool->setMeta('total', $total);
-		}
-		
 		$pool->poolModels($models, true);
 		
-		return new JsonResponse($pool->toArray());
+		$data = $pool->toArray($models->getAdapter()->getTypeKey());
+		
+		if($total !== null) {
+			$data['meta'] = array('total' => $total);
+		}
+		
+		return new JsonResponse($data);
 	}
 	
 	protected function makeModelResponse(ModelProxy $model, $relations = true) {
 		
 		$pool = $this->createPool();
-		$pool->setSingularized($model->getAdapter()->getTypeKey());
 		$pool->poolModel($model, $relations);
 		
-		return new JsonResponse($pool->toArray());
+		$data = $pool->toArray($model->getAdapter()->getTypeKey(), true);
+		return new JsonResponse($data);
 	}
 	
 	protected function makeErrorResponse($code, $message = null) {
