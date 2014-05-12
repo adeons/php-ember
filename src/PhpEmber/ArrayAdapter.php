@@ -138,6 +138,10 @@ class ArrayModelIterator implements ModelIterator {
 		$this->update();
 	}
 	
+	function getAdapter() {
+		return $this->adapter;
+	}
+	
 	function count() {
 		return count($this->data);
 	}
