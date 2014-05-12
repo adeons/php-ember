@@ -5,8 +5,6 @@ class ModelPool {
 	
 	private $serializer;
 	private $payloads = array();
-	private $singularized;
-	private $meta = array();
 	
 	function __construct(Serializer $serializer) {
 		$this->serializer = $serializer;
@@ -28,22 +26,6 @@ class ModelPool {
 	
 	function setPayload($typeKey, $id, array $payload) {
 		$this->payloads[$typeKey][$id] = $payload;
-	}
-	
-	function getSingularized() {
-		return $this->singularized;
-	}
-	
-	function setSingularized($typeKey) {
-		$this->singularized = $typeKey;
-	}
-	
-	function getMeta($name) {
-		return isset($this->meta[$name]) ? $this->meta[$name] : null;
-	}
-	
-	function setMeta($name, $value) {
-		$this->meta[$name] = $value;
 	}
 	
 	/**
@@ -99,18 +81,30 @@ class ModelPool {
 		}
 	}
 	
-	function toArray() {
+	function toArray($mainType = null, $mainAsObject = false) {
 		$result = array();
 		
-		foreach($this->payloads as $typeKey => $models) {
+		foreach($this->payloads as $typeKey => $typePayloads) {
 			
-			$result[$typeKey] = $typeKey == $this->singularized ?
-				current($models) :
-				array_values($models);
+			if($mainAsObject && $typeKey == $mainType) {
+				
+				// single a single object requested (not an array)
+				$finalValue = current($typePayloads);
+				
+			} else {
+				
+				// remove ID keys
+				$finalValue = array_values($typePayloads);
+			}
+			
+			$result[$typeKey] = $finalValue;
 		}
 		
-		if($this->meta) {
-			$result['meta'] = $this->meta;
+		if(!$mainAsObject && !isset($result[$mainType])) {
+			
+			// main type result should be an array, but no payloads for it were found
+			// so, add an empty array (see #1)
+			$result[$mainType] = array();
 		}
 		
 		return $result;
