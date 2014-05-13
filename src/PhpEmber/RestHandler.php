@@ -122,7 +122,7 @@ class RestHandler {
 		
 		$this->serializer->decode($context);
 		
-		if($context->hasErrors()) {
+		if($context->errors->hasErrors()) {
 			
 			return new JsonResponse(array(
 				'error' => array(
@@ -133,7 +133,7 @@ class RestHandler {
 			), Response::HTTP_BAD_REQUEST);
 		}
 		
-		if($model->save($context) == false) {
+		if($model->save($context->errors) == false) {
 			
 			return $this->makeErrorResponse(Response::HTTP_BAD_REQUEST, 'Validation failed');
 		}
