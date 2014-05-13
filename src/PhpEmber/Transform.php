@@ -12,6 +12,7 @@ class Transform implements Serializer {
 	function __construct(AttributeInfo $attribute) {
 		$this->attribute = $attribute;
 		$this->allowRead = $attribute->readable;
+		$this->allowWrite = $attribute->writable;
 	}
 	
 	function getAttribute() {
