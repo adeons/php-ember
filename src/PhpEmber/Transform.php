@@ -4,6 +4,7 @@ namespace PhpEmber;
 class Transform implements Serializer {
 	
 	private $attribute;
+	private $required;
 	private $allowRead = true;
 	private $allowWrite = false;
 	private $decodeCallback;
@@ -11,6 +12,7 @@ class Transform implements Serializer {
 	
 	function __construct(AttributeInfo $attribute) {
 		$this->attribute = $attribute;
+		$this->required = $attribute->required;
 		$this->allowRead = $attribute->readable;
 		$this->allowWrite = $attribute->writable;
 	}
@@ -21,6 +23,10 @@ class Transform implements Serializer {
 	
 	function getName() {
 		return $this->attribute->name;
+	}
+	
+	function isRequired() {
+		return $this->required;
 	}
 	
 	function isReadable() {
@@ -83,7 +89,7 @@ class Transform implements Serializer {
 		
 		if($payload === null) {
 			
-			if(!$this->allowNull) {
+			if($this->required) {
 				$context->errors->addError($name, 'Cannot be null');
 				return false;
 			}
