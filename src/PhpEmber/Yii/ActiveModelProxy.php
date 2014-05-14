@@ -76,7 +76,7 @@ class ActiveModelProxy implements ModelProxy {
 		
 		if(!$ok) {
 			foreach($this->ar->getErrors() as $attribute => $errors) {
-				$context->addErrors($attribute, $errors);
+				$errors->addErrors($attribute, $errors);
 			}
 		}
 		
