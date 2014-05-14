@@ -104,6 +104,12 @@ class RestHandler {
 			return $this->makeErrorResponse(Response::HTTP_BAD_REQUEST, "Missing $typeKey payload");
 		}
 		
+		$modelPayload = $payload[$typeKey];
+		
+		if(!is_array($modelPayload)) {
+			return $this->makeErrorResponse(Response::HTTP_BAD_REQUEST, 'Invalid payload type');
+		}
+		
 		if($id) {
 			
 			$model = $adapter->find($id);
@@ -118,7 +124,7 @@ class RestHandler {
 		}
 		
 		$context = new SerializerContext($model);
-		$context->payload = $payload[$typeKey];
+		$context->payload = $modelPayload;
 		
 		$this->serializer->decode($context);
 		
