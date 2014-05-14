@@ -303,7 +303,7 @@ class ActiveAdapter implements Adapter {
 		}
 		
 		$info = new AttributeInfo($column->name, $type);
-		$info->readable = true;
+		$info->writable = true;
 		$info->required = !$column->allowNull;
 		
 		if($type == AttributeType::DATE_TYPE) {
@@ -353,6 +353,7 @@ class ActiveAdapter implements Adapter {
 		if($relation instanceof \CBelongsToRelation) {
 			
 			$info->type = AttributeType::BELONGS_TO;
+			$info->writable = true;
 			
 			if($fullJoin) {
 				// Only JOIN if related model data is requested
