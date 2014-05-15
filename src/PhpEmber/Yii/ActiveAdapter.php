@@ -18,7 +18,10 @@ class ActiveAdapter implements Adapter {
 		'text' => AttributeType::STRING_TYPE,
 		'date' => AttributeType::DATE_TYPE,
 		'datetime' => AttributeType::DATE_TYPE,
-		'timestamp' => AttributeType::DATE_TYPE
+		'timestamp' => AttributeType::DATE_TYPE,
+		
+		// the framework parses it as integer; reinterpret as boolean
+		'tinyint(1)' => AttributeType::BOOLEAN_TYPE
 	);
 	
 	public $criteria = array();
